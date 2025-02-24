@@ -10,6 +10,12 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
+    plugins {
+        kotlin("jvm") version "1.9.24"
+    }
+}
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -22,5 +28,7 @@ dependencyResolutionManagement {
 rootProject.name = "Kinopoisk"
 include(":app")
 include(":features")
-include(":features:kinopoist-main")
+include(":features:kinopoisk-main")
 include(":kinopoisk-data")
+include(":features:kinopoisk-main:ui-logic")
+include(":features:kinopoisk-main:ui")
