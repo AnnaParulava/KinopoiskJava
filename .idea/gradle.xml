@@ -13,8 +13,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/kinopoisk-main" />
+            <option value="$PROJECT_DIR$/features/kinopoisk-main/presentation-logic" />
             <option value="$PROJECT_DIR$/features/kinopoisk-main/ui" />
-            <option value="$PROJECT_DIR$/features/kinopoisk-main/ui-logic" />
             <option value="$PROJECT_DIR$/kinopoisk-data" />
           </set>
         </option>
