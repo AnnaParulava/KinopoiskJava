@@ -22,5 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "Kinopoisk"
 include(":app")
 include(":features")
-include(":features:kinopoist-main")
 include(":kinopoisk-data")
+include(":features:main_search")
+include(":core")
+include(":core:kinopoisk-api")

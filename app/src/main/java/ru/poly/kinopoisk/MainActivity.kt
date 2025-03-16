@@ -1,17 +1,22 @@
 package ru.poly.kinopoisk
 
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import ru.poly.kinopoisk.ui.theme.KinopoiskTheme
+import androidx.compose.foundation.layout.PaddingValues
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +24,61 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KinopoiskTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                Host()
             }
         }
     }
 }
 
+//@AndroidEntryPoint
+//class MainActivity : ComponentActivity() {
+//    private val viewModel: MainScreenViewModel by viewModels()
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
+//        setContent {
+//            KinopoiskTheme {
+//                val state by viewModel.uiState.collectAsState()
+//                MainScreen(
+//                    state = state,
+//                    onEvent = viewModel::onEvent
+//                )
+//            }
+//        }
+//    }
+//}
+
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+fun Host() {
+    val navController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val bottomBarVisibility = remember { mutableStateOf(false) }
+
+    Scaffold(bottomBar = {
+        //TODO Implement if you need bottom bar
+    }) { scaffoldPaddings ->
+        MainScreen(navController, scaffoldPaddings)
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    KinopoiskTheme {
-        Greeting("Android")
+fun MainScreen(navController: NavHostController, scaffoldPaddings: PaddingValues) {
+    NavHost(
+        navController = navController,
+        startDestination = RootDestinations.KINO_LIST.name
+    ) {
+        navigation(
+            route = RootDestinations.KINO_LIST.name,
+            startDestination = MainScreenDestinations.SEARCH_MAIN.name
+        ) {
+            deployMainSearch(navController, scaffoldPaddings)
+        }
     }
+}
+
+enum class RootDestinations {
+    KINO_LIST
 }

@@ -1,25 +1,22 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kapt)
     alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.compose.compiler)
+  //  alias(libs.plugins.compose.compiler)
 
 }
 
 android {
-    namespace = "ru.poly.kinopoisk"
+    namespace = "ru.poly.core"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "ru.poly.kinopoisk"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+ //       consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -38,26 +35,16 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.navigation.compose)
-
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.profileinstaller)
-    implementation(libs.androidx.foundation.layout.android)
-    implementation(libs.androidx.material3.android)
-
     kapt(libs.dagger.hilt.compiler)
-
-    implementation(project(":features:main_search"))
 }
