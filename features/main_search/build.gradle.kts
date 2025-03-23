@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -62,8 +63,12 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
     kapt(libs.dagger.hilt.compiler)
 
+    implementation(libs.androidx.paging)
+    implementation(libs.androidx.paging.compose)
+
     debugImplementation(libs.okhttp.logging.interceptor)
 
     implementation(project(":core"))
     implementation(project(":core:kinopoisk-api"))
+    implementation(project(":features:movie_detail"))
 }

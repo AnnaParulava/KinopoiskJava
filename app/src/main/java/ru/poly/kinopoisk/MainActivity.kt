@@ -1,24 +1,30 @@
 package ru.poly.kinopoisk
 
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.navigation
-import androidx.navigation.compose.rememberNavController
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.poly.kinopoisk.ui.theme.KinopoiskTheme
-import androidx.compose.foundation.layout.PaddingValues
+import ru.poly.main_search.MainScreenDestinations
+import ru.poly.main_search.deployMainSearch
+import ru.poly.main_search.deployMovieDetails
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -29,25 +35,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//@AndroidEntryPoint
-//class MainActivity : ComponentActivity() {
-//    private val viewModel: MainScreenViewModel by viewModels()
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContent {
-//            KinopoiskTheme {
-//                val state by viewModel.uiState.collectAsState()
-//                MainScreen(
-//                    state = state,
-//                    onEvent = viewModel::onEvent
-//                )
-//            }
-//        }
-//    }
-//}
 
 
 @Composable
@@ -75,6 +62,7 @@ fun MainScreen(navController: NavHostController, scaffoldPaddings: PaddingValues
             startDestination = MainScreenDestinations.SEARCH_MAIN.name
         ) {
             deployMainSearch(navController, scaffoldPaddings)
+            deployMovieDetails(navController, PaddingValues())
         }
     }
 }

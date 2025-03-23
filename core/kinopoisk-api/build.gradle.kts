@@ -67,6 +67,8 @@ dependencies {
     kapt(libs.retrofit.responseTypeKeeper)
     implementation(libs.converter.gson)
 
+    implementation(libs.androidx.paging)
+    implementation(libs.androidx.paging.compose)
 
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.profileinstaller)

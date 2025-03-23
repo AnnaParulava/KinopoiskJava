@@ -1,8 +1,10 @@
 package ru.poly.main_search
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -31,6 +32,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.LoadState.Loading
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import ru.poly.kinopoisk_api.models.Movie
 
@@ -62,7 +67,7 @@ fun MainScreen(
             }
 
             is MainScreenUiState.Content -> {
-                MovieList(movies = state.films)
+                MovieList(pageData = state.films, navController = navController)
             }
         }
     }
@@ -70,23 +75,42 @@ fun MainScreen(
 
 
 @Composable
-private fun MovieList(movies: List<Movie>) {
+private fun MovieList(navController: NavController, pageData: Flow<PagingData<Movie>>) {
+    val movies = pageData.collectAsLazyPagingItems()
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(movies) { movie ->
-            MovieItem(movie = movie)
+        items(count = movies.itemCount) { index ->
+            val movie = movies[index]
+            if (movie != null) {
+                MovieItem(movie = movie, onClick = {
+                    Log.d("AAA", "MainScreen $movie")
+                    navController.navigate("${MainScreenDestinations.DETAILS.name}/${movie.id}")
+                }
+                )
+            }
+        }
+        if (movies.loadState.prepend == Loading || movies.loadState.append == Loading) {
+            item { Loader() }
         }
     }
 }
 
 @Composable
-private fun MovieItem(movie: Movie) {
+private fun Loader() {
+    Box(Modifier.fillMaxWidth()) {
+        CircularProgressIndicator(Modifier.align(Alignment.Center))
+    }
+}
+
+@Composable
+private fun MovieItem(movie: Movie, onClick: () -> Unit) {
     Card {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+                .clickable(onClick = onClick)
         ) {
             Text(
                 text = movie.title,
@@ -163,5 +187,5 @@ private fun DropDownIcon(onEvent: (MainScreenEvent) -> Unit) {
 
 
 sealed interface MainScreenEvent {
-   data class UserQueryChanged(val query: String) : MainScreenEvent
+    data class UserQueryChanged(val query: String) : MainScreenEvent
 }
